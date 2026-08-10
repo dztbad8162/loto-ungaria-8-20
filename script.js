@@ -1,17 +1,71 @@
-// Global Variables
+// Loto Ungaria 8/20 - Script cu API Live
 let currentSort = 'newest';
 let filteredData = [...lotoData];
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
+    // Preia datele live din 5 în 5 minute
+    fetchLiveDraws();
+    setInterval(fetchLiveDraws, 5 * 60 * 1000); // 5 minute
 });
+
+// Fetch live draws from LotoStats.ro
+async function fetchLiveDraws() {
+    try {
+        // URL-ul API-ului pentru Ungaria Putto 8/20
+        const response = await fetch('https://api.lotostats.ro/api/draws?game=putto_8_20&limit=100');
+        
+        if (response.ok) {
+            const data = await response.json();
+            
+            if (data.draws && data.draws.length > 0) {
+                // Actualizeaza lotoData cu extragerile noi
+                const newDraws = data.draws.map(draw => ({
+                    date: draw.date,
+                    numbers: draw.numbers.sort((a, b) => a - b),
+                    time: draw.time
+                }));
+                
+                // Combina cu datele existente si elimina duplicatele
+                const combinedData = [...newDraws];
+                const existingDates = new Set(newDraws.map(d => d.date + (d.time || '')));
+                
+                lotoData.forEach(draw => {
+                    const key = draw.date + (draw.time || '');
+                    if (!existingDates.has(key)) {
+                        combinedData.push(draw);
+                    }
+                });
+                
+                // Sorteaza descrescator dupa data
+                combinedData.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // Updateaza variabila globala
+                window.lotoData = combinedData;
+                filteredData = [...combinedData];
+                
+                // Reîncarca toate sectiunile
+                updateOverview();
+                updateStatistics();
+                updateHistory();
+                updateAnalysisSection();
+                
+                console.log('✅ Date actualizate din LotoStats.ro:', newDraws.length, 'extrageri noi');
+            }
+        }
+    } catch (error) {
+        console.log('⚠️ Nu s-a putut conecta la LotoStats.ro, se folosesc date locale');
+        // Continua cu datele locale
+    }
+}
 
 function initializeApp() {
     updateOverview();
     updateStatistics();
     updateHistory();
     setupEventListeners();
+    updateAnalysisSection();
 }
 
 // Setup Event Listeners
@@ -46,18 +100,20 @@ function updateOverview() {
     document.getElementById('totalDraws').textContent = lotoData.length;
 
     // Day span
-    const firstDate = new Date(lotoData[0].date);
-    const lastDate = new Date(lotoData[lotoData.length - 1].date);
-    const daySpan = Math.floor((lastDate - firstDate) / (1000 * 60 * 60 * 24)) + 1;
-    document.getElementById('daySpan').textContent = daySpan + ' zile';
+    if (lotoData.length > 0) {
+        const firstDate = new Date(lotoData[lotoData.length - 1].date);
+        const lastDate = new Date(lotoData[0].date);
+        const daySpan = Math.floor((lastDate - firstDate) / (1000 * 60 * 60 * 24)) + 1;
+        document.getElementById('daySpan').textContent = daySpan + ' zile';
 
-    // Frequency analysis
-    const frequency = calculateFrequency();
-    const frequencies = Object.values(frequency);
-    frequencies.sort((a, b) => b.count - a.count);
+        // Frequency analysis
+        const frequency = calculateFrequency();
+        const frequencies = Object.values(frequency);
+        frequencies.sort((a, b) => b.count - a.count);
 
-    document.getElementById('mostFrequent').textContent = frequencies[0].number;
-    document.getElementById('leastFrequent').textContent = frequencies[frequencies.length - 1].number;
+        document.getElementById('mostFrequent').textContent = frequencies[0].number;
+        document.getElementById('leastFrequent').textContent = frequencies[frequencies.length - 1].number;
+    }
 }
 
 // ===== STATISTICS SECTION =====
@@ -213,7 +269,9 @@ function updateHistory() {
     let dataToDisplay = [...filteredData];
     
     if (currentSort === 'newest') {
-        dataToDisplay.reverse();
+        dataToDisplay.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else {
+        dataToDisplay.sort((a, b) => new Date(a.date) - new Date(b.date));
     }
     
     if (dataToDisplay.length === 0) {
@@ -233,12 +291,14 @@ function updateHistory() {
             day: 'numeric' 
         });
         
+        const timeStr = draw.time ? ` - ${draw.time}` : '';
+        
         const numberBadges = draw.numbers.map(num => 
             `<span class="number-badge">${num}</span>`
         ).join('');
         
         item.innerHTML = `
-            <div class="history-date">${formattedDate}</div>
+            <div class="history-date">${formattedDate}${timeStr}</div>
             <div class="history-numbers">${numberBadges}</div>
         `;
         
@@ -263,15 +323,6 @@ function filterHistory() {
 }
 
 // ===== ANALYSIS SECTION =====
-document.addEventListener('DOMContentLoaded', function() {
-    // This will be called after overview/statistics are loaded
-    setTimeout(updateAnalysis, 100);
-});
-
-function updateAnalysis() {
-    updateAnalysisSection();
-}
-
 function updateAnalysisSection() {
     updatePairFrequency();
     updateConsecutiveNumbers();
@@ -385,6 +436,8 @@ function updateEvenOddStats() {
 function updateSumStats() {
     const sumDiv = document.getElementById('sumStats');
     sumDiv.innerHTML = '';
+    
+    if (lotoData.length === 0) return;
     
     const sums = lotoData.map(draw => draw.numbers.reduce((a, b) => a + b, 0));
     const avgSum = (sums.reduce((a, b) => a + b, 0) / sums.length).toFixed(1);
