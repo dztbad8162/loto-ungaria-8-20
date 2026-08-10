@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loto Ungaria 8/20 - Analiză Statistică</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎰 Loto Ungaria 8/20</h1>
+            <p>Analiză Statistică și Istoric Complet</p>
+        </header>
+
+        <nav class="navbar">
+            <button class="nav-btn active" onclick="showSection('overview')">Prezentare Generală</button>
+            <button class="nav-btn" onclick="showSection('statistics')">Statistici</button>
+            <button class="nav-btn" onclick="showSection('history')">Istoric</button>
+            <button class="nav-btn" onclick="showSection('analysis')">Analiză Detaliată</button>
+        </nav>
+
+        <!-- Prezentare Generală -->
+        <section id="overview" class="section active">
+            <h2>Prezentare Generală</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Extrageri</h3>
+                    <p class="stat-number" id="totalDraws">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Interval Zile</h3>
+                    <p class="stat-number" id="daySpan">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Numărul Apărut Cel Mai Des</h3>
+                    <p class="stat-number" id="mostFrequent">-</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Numărul Apărut Cel Mai Rar</h3>
+                    <p class="stat-number" id="leastFrequent">-</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistici -->
+        <section id="statistics" class="section">
+            <h2>Analiza Statistică</h2>
+            
+            <div class="stats-container">
+                <div class="chart-box">
+                    <h3>Frecvența Numerelor (Top 10)</h3>
+                    <div id="frequencyChart" class="chart"></div>
+                </div>
+
+                <div class="chart-box">
+                    <h3>Distribuția Numerelor (1-20)</h3>
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>Număr</th>
+                                <th>Aparituri</th>
+                                <th>Procent (%)</th>
+                                <th>Grafic</th>
+                            </tr>
+                        </thead>
+                        <tbody id="frequencyTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="chart-box">
+                    <h3>Statistici Generale</h3>
+                    <div id="generalStats" class="stats-list"></div>
+                </div>
+
+                <div class="chart-box">
+                    <h3>Tendințe Lunare</h3>
+                    <div id="monthlyTrends" class="chart"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Istoric -->
+        <section id="history" class="section">
+            <h2>Istoric Extragerilor</h2>
+            
+            <div class="filter-box">
+                <input type="text" id="searchInput" placeholder="Caută număr sau dată...">
+                <select id="sortSelect">
+                    <option value="newest">Cel mai recent</option>
+                    <option value="oldest">Cel mai vechi</option>
+                </select>
+            </div>
+
+            <div id="historyContainer" class="history-container">
+            </div>
+        </section>
+
+        <!-- Analiză Detaliată -->
+        <section id="analysis" class="section">
+            <h2>Analiză Detaliată</h2>
+            
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <h3>Perechi Frecvente</h3>
+                    <div id="pairFrequency" class="analysis-list"></div>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>Numere Consecutive</h3>
+                    <div id="consecutiveNumbers" class="analysis-list"></div>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>Numere Pare vs Impare</h3>
+                    <div id="evenOddStats" class="analysis-list"></div>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>Suma Numerelor</h3>
+                    <div id="sumStats" class="analysis-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Loto Ungaria 8/20 Analyzer | Analiză Statistică Completă</p>
+        </footer>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
