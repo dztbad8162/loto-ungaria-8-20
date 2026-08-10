@@ -1,5 +1,6 @@
-// Loto Ungaria 8/20 - Istoric Extragerilor (Date Ilustrative)
+// Loto Ungaria 8/20 - Istoric Extragerilor (Date Actualizate din 2026)
 const lotoData = [
+    // Datele din 2024 (primele)
     { date: "2024-01-15", numbers: [2, 5, 8, 11, 14, 16, 19, 20] },
     { date: "2024-01-16", numbers: [1, 3, 6, 9, 12, 15, 18, 20] },
     { date: "2024-01-17", numbers: [2, 4, 7, 10, 13, 16, 18, 19] },
@@ -54,5 +55,12 @@ const lotoData = [
     { date: "2024-03-07", numbers: [1, 3, 6, 9, 12, 15, 18, 20] },
     { date: "2024-03-08", numbers: [2, 4, 7, 10, 13, 16, 18, 19] },
     { date: "2024-03-09", numbers: [1, 5, 8, 11, 14, 17, 19, 20] },
-    { date: "2024-03-10", numbers: [3, 6, 9, 12, 15, 17, 18, 20] }
+    { date: "2024-03-10", numbers: [3, 6, 9, 12, 15, 17, 18, 20] },
+    
+    // Datele noi din 10 august 2026 - LotoStats.ro (Ungaria Putto 8/20)
+    { date: "2026-08-10", numbers: [1, 3, 5, 6, 7, 8, 12, 19], time: "13:55" },
+    { date: "2026-08-10", numbers: [3, 4, 5, 7, 11, 15, 16, 20], time: "14:00" },
+    { date: "2026-08-10", numbers: [1, 3, 5, 6, 11, 12, 13, 20], time: "14:05" },
+    { date: "2026-08-10", numbers: [3, 9, 10, 11, 13, 14, 19, 20], time: "14:10" },
+    { date: "2026-08-10", numbers: [3, 5, 10, 11, 13, 14, 17, 19], time: "14:15" }
 ];
