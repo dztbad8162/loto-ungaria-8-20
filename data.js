@@ -1,5 +1,6 @@
 // Loto Ungaria 8/20 - Istoric Extragerilor (Date Actualizate din 2026)
-const lotoData = [
+const lotoData = [{ date: "2026-08-10", numbers: [1, 2, 3, 4, 5, 6, 7, 8], time: "15:00" },
+{ date: "2026-08-11", numbers: [2, 4, 6, 8, 10, 12, 14, 16], time: "13:55" },
     // Datele din 2024 (primele)
     { date: "2024-01-15", numbers: [2, 5, 8, 11, 14, 16, 19, 20] },
     { date: "2024-01-16", numbers: [1, 3, 6, 9, 12, 15, 18, 20] },
